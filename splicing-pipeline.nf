@@ -16,7 +16,7 @@ process trim {
 
     shell:
     """
-	trim_galore --paired --three_prime_clip_R1 15 --three_prime_clip_R2 15 !{fastq[0]} !{fastq[1]} -o !{label}
+	trim_galore --paired !{fastq[0]} !{fastq[1]} -o !{label}
     """
 }
 
@@ -63,7 +63,7 @@ process splice {
 
     shell:
     """
-    
+    multipleFieldSelection.py 
     """
 }
 
