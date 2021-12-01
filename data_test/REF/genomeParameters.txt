@@ -1,0 +1,16 @@
+### STAR   --runMode genomeGenerate   --runThreadN 2   --genomeDir .   --genomeFastaFiles 17_7572000-7591000.fasta      --genomeSAindexNbases 8   --sjdbGTFfile TP53_small.gtf
+### GstrandBit 32
+versionGenome	2.7.1a
+genomeFastaFiles	17_7572000-7591000.fasta 
+genomeSAindexNbases	8
+genomeChrBinNbits	18
+genomeSAsparseD	1
+sjdbOverhang	100
+sjdbFileChrStartEnd	- 
+sjdbGTFfile	TP53_small.gtf
+sjdbGTFchrPrefix	-
+sjdbGTFfeatureExon	exon
+sjdbGTFtagExonParentTranscript	transcript_id
+sjdbGTFtagExonParentGene	gene_id
+sjdbInsertSave	Basic
+genomeFileSizes	263149 165012
