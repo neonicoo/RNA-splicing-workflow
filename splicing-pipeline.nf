@@ -47,27 +47,55 @@ process quant {
     """
 }
 
+process formatTPM {
+	input:
+		path quant
+
+	output:
+		path "iso_tpm_formatted.txt"
+
+	shell:
+	"""
+	multipleFieldSelection.py -i !{quant}/quant.sf -k 1 -f 4 -o iso_tpm.txt
+	Rscript ./format_Ensembl_ids.R iso_tpm.txt
+	"""
+}
+
 
 process generateEvents {
     input:
-		path quant
 		path annotation
 
     output:
-       path "iso_tpm.txt"
+       path "transcripts.events.ioe"
 
     publishDir "SUPPA", mode: 'copy'
 
     shell:
     """
-    suppa.py generateEvents -i !{annotation} -o ensemble.events -e SE SS MX RI FL -f ioe
+    suppa.py generateEvents -i !{annotation} -o transcripts.events -e SE SS MX RI FL -f ioe
     awk '
 		FNR==1 && NR!=1 { while (/^<header>/) getline; }
 		1 {print}
-	'./SUPPA/*.ioe > ./SUPPA/ensemble.events.ioe
+	'./SUPPA/*.ioe > ./SUPPA/transcripts.events.ioe
     """
 }
 
+process psiPerEvent{
+	input:
+		path transcripts
+		path isoTPM
+		
+	output:
+		path "TRA2_events.psi"
+	
+	publishDir "SUPPA", mode: 'copy'
+	
+	shell:
+	"""
+	suppa.py psiPerEvent -i !{transcripts} -e !{isoTPM} -o TRA2_events
+	"""
+}
 
 
 workflow {
