@@ -10,8 +10,6 @@ process trim {
     output:
         path "${label}"
 
-    publishDir "TRIM", mode: 'copy'
-
     shell:
     """
 	trim_galore --paired !{fastq[0]} !{fastq[1]} -o !{label}
@@ -50,20 +48,27 @@ process quant {
 }
 
 
-process splice {
+process generateEvents {
     input:
-		        
+		path quant
+		path annotation
 
     output:
-       
+       path "iso_tpm.txt"
 
-    publishDir 
+    publishDir "SUPPA", mode: 'copy'
 
     shell:
     """
-    multipleFieldSelection.py 
+    suppa.py generateEvents -i !{annotation} -o ensemble.events -e SE SS MX RI FL -f ioe
+    awk '
+		FNR==1 && NR!=1 { while (/^<header>/) getline; }
+		1 {print}
+	'./SUPPA/*.ioe > ./SUPPA/ensemble.events.ioe
     """
 }
+
+
 
 workflow {
 
