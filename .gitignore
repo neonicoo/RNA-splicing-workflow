@@ -1,3 +1,11 @@
+# others 
+hg19_EnsenmblGenes_sequence_ensenmbl.fasta.gz
+Homo_sapiens.GRCh37.75.formatted.gtf.gz
+/work/
+.nextflow.log*
+.nextflow/
+.Rhistory
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
