@@ -1,16 +1,21 @@
 nextflow.enable.dsl=2
 
-params.reads = "./data_test/FASTQ"
+params.reads = null
+params.ref = null
+params.formatscript = null 
+//params.annot = null
 
-fasta_ch = file("./data_test/REF/*.fasta")
-fastq_ch = Channel.fromFilePairs(params.reads + "/*_{1,2}.{fastq,fq}.gz").view()
+//gtf_file = file(params.annot)
+R_file = file(params.formatscript)
+fasta_file = file(params.ref)
+fastq_ch = Channel.fromFilePairs(params.reads + "*_{1,2}.{fastq,fq}.gz").view()
 
 process trim {
     input:
         tuple val(label), path(fastq)
 		
     output:
-        path "${label}"
+        tuple val("${label}"), file("${label}/${label}_1_val_1.fq.gz"), file("${label}/${label}_2_val_2.fq.gz")
 	
     shell:
     """
@@ -34,14 +39,14 @@ process buildIndex {
 process quant {
     input:
         path index
-        tuple val(label), path(fastq)
+        tuple val(label), path(fastq1), path(fastq2)
 
     output:
         path "${label}"
 
     shell:
     """
-    salmon quant -i !{index} -l A -1 !{fastq[0]} -2 !{fastq[1]} -o !{label}
+    salmon quant -i !{index} -l A -1 !{fastq1} -2 !{fastq2} -o !{label}
     """
 }
 
@@ -50,22 +55,19 @@ process formatTPM {
 		path quant
 
 	output:
-		path "iso_tpm_formatted.txt"
+		file "iso_tpm_formatted.txt"
 
 	shell:
 	"""
 	multipleFieldSelection.py -i !{quant}/quant.sf -k 1 -f 4 -o iso_tpm.txt
-	Rscript ./format_Ensembl_ids.R iso_tpm.txt
+	Rscript !{R_file} iso_tpm.txt
 	"""
 }
 
 
 process generateEvents {
-    input:
-		path annotation
-
     output:
-       path "transcripts.events.ioe"
+       file "transcripts.events.ioe"
 
     shell:
     """
@@ -79,8 +81,8 @@ process generateEvents {
 
 process psiPerEvent{
 	input:
-		path transcripts
-		path isoTPM
+		file transcripts
+		file isoTPM
 		
 	output:
 		path "TRA2_events.psi"
@@ -96,7 +98,7 @@ process psiPerEvent{
 
 workflow {
     trim(fastq_ch)
-    /*buildIndex(fasta_ch)
+    buildIndex(fasta_file)
     quant(buildIndex.out, trim.out)
-    splice()*/
+    formatTPM(quant.out)
 }
