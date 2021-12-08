@@ -1,7 +1,9 @@
 nextflow.enable.dsl=2
 
+params.reads = "./data_test/FASTQ"
+
 fasta_ch = file("./data_test/REF/*.fasta")
-fastq_ch = Channel.fromFilePairs("./data_test/FASTQ/*_{1,2}.fastq.gz").view()
+fastq_ch = Channel.fromFilePairs(params.reads + "/*_{1,2}.{fastq,fq}.gz").view()
 
 process trim {
     input:
@@ -9,7 +11,7 @@ process trim {
 		
     output:
         path "${label}"
-
+	
     shell:
     """
 	trim_galore --paired !{fastq[0]} !{fastq[1]} -o !{label}
@@ -22,8 +24,6 @@ process buildIndex {
 
     output:
         path "transcripts_index"
-
-    publishDir "INDEX", mode: 'copy'
 
     shell:
     """
@@ -38,8 +38,6 @@ process quant {
 
     output:
         path "${label}"
-
-    publishDir "EXPRESSION", mode: 'copy'
 
     shell:
     """
@@ -69,8 +67,6 @@ process generateEvents {
     output:
        path "transcripts.events.ioe"
 
-    publishDir "SUPPA", mode: 'copy'
-
     shell:
     """
     suppa.py generateEvents -i !{annotation} -o transcripts.events -e SE SS MX RI FL -f ioe
@@ -99,10 +95,8 @@ process psiPerEvent{
 
 
 workflow {
-
     trim(fastq_ch)
-    buildIndex(fasta_ch)
+    /*buildIndex(fasta_ch)
     quant(buildIndex.out, trim.out)
-    splice()
-
+    splice()*/
 }
