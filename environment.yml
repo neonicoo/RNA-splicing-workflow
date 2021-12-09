@@ -1,4 +1,4 @@
-name: bioinf
+name: rna-splicing
 channels:
   - conda-forge
   - bioconda
