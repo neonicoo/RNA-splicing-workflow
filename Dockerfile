@@ -12,6 +12,10 @@ LABEL about.home="https://github.com/neonicoo/RNA-splicing-workflow"
 LABEL about.documentation="https://github.com/neonicoo/RNA-splicing-workflow/README.md"
 LABEL about.license_file="https://github.com/neonicoo/RNA-splicing-workflow/LICENSE.txt"
 LABEL about.license="MIT License"
+LABEL authors="Son-Michel DINH, Aurélie FISCHER, Maëlys MARRY, Nicolas MENDIBOURE"
+
+################## MAINTAINER ######################
+MAINTAINER neonicoo <**nicolas.mendiboure@insa-lyon.fr**>
 
 ################## INSTALLATION ######################
 COPY environment.yml /
