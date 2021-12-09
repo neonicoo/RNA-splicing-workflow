@@ -96,7 +96,7 @@ process psiPerEvent{
 	"""
 }
 
-#psiPerEvent(generateEvents.out, formatTPM.out)
+//psiPerEvent(generateEvents.out, formatTPM.out)
 
 workflow {
     trim(fastq_ch)
