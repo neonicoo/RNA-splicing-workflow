@@ -67,7 +67,7 @@ process formatTPM {
 
 process generateEvents {
     output:
-       file "transcripts.events.ioe"
+       files "transcripts.events.ioe"
 
     shell:
     """
@@ -75,8 +75,7 @@ process generateEvents {
     awk '
         FNR==1 && NR!=1 { while (/^<header>/) getline; }
         1 {print}
-    '
-    *.ioe > transcripts.events.ioe
+    ' *.ioe > transcripts.events.ioe
     """
 }
 
