@@ -67,7 +67,7 @@ process formatTPM {
 
 process generateEvents {
     output:
-       files "transcripts.events.ioe"
+       file "transcripts.events.ioe"
 
     shell:
     """
@@ -95,7 +95,7 @@ process psiPerEvent{
 	"""
 }
 
-//psiPerEvent(generateEvents.out, formatTPM.out)
+
 
 workflow {
     trim(fastq_ch)
@@ -103,4 +103,5 @@ workflow {
     quant(buildIndex.out, trim.out)
     formatTPM(quant.out)
     generateEvents()
+    psiPerEvent(generateEvents.out, formatTPM.out)
 }
