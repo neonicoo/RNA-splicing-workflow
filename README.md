@@ -35,9 +35,9 @@ You can avoid installing all the external software by only installing Docker. Se
 
 # Files and Warnings (WIP)
 
-- Index building with salmon needs to be performed on the **transcriptome** not the genome (`--ref parameter`, [transcriptome that can be used](https://github.com/comprna/SUPPA_supplementary_data/blob/master/annotation/hg19_EnsenmblGenes_sequence_ensenmbl.fasta.gz))
-- R [script](https://github.com/comprna/SUPPA/blob/master/scripts/format_Ensembl_ids.R) to format transcripts ids (`--formatscript parameter`)
-- Event calculation (`--annot parameter`) requires an unziped GTF file ([one that can be used from Ensembl](https://github.com/comprna/SUPPA_supplementary_data/blob/master/annotation/Homo_sapiens.GRCh37.75.formatted.gtf.gz))
+- Index building with salmon needs to be performed on the **transcriptome** not the genome (`--ref` parameter, [transcriptome that can be used](https://github.com/comprna/SUPPA_supplementary_data/blob/master/annotation/hg19_EnsenmblGenes_sequence_ensenmbl.fasta.gz))
+- R [script](https://github.com/comprna/SUPPA/blob/master/scripts/format_Ensembl_ids.R) to format transcripts ids (`--formatscript` parameter)
+- Event calculation (`--annot` parameter) requires an unziped GTF file ([one that can be used from Ensembl](https://github.com/comprna/SUPPA_supplementary_data/blob/master/annotation/Homo_sapiens.GRCh37.75.formatted.gtf.gz))
 
 ## Input
   | Type      | Description     |
