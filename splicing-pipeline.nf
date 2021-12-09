@@ -87,7 +87,7 @@ process psiPerEvent{
 	output:
 		file "TRA2_events.psi"
 	
-	publishDir "SUPPA", mode: 'copy'
+	publishDir "SPLICING", mode: 'copy'
 	
 	shell:
 	"""
