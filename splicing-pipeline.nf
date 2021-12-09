@@ -73,10 +73,10 @@ process generateEvents {
     """
     suppa.py generateEvents -i !{gtf_file} -o transcripts.events -e SE SS MX RI FL -f ioe
     awk '
-		FNR==1 && NR!=1 { while (/^<header>/) getline; }
-		1 {print}
-	'
-	./*.ioe > ./transcripts.events.ioe
+        FNR==1 && NR!=1 { while (/^<header>/) getline; }
+        1 {print}
+    '
+    *.ioe > transcripts.events.ioe
     """
 }
 
@@ -86,7 +86,7 @@ process psiPerEvent{
 		file isoTPM
 		
 	output:
-		path "TRA2_events.psi"
+		file "TRA2_events.psi"
 	
 	publishDir "SUPPA", mode: 'copy'
 	
@@ -96,6 +96,7 @@ process psiPerEvent{
 	"""
 }
 
+#psiPerEvent(generateEvents.out, formatTPM.out)
 
 workflow {
     trim(fastq_ch)
