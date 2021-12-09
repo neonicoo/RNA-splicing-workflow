@@ -3,9 +3,9 @@ nextflow.enable.dsl=2
 params.reads = null
 params.ref = null
 params.formatscript = null 
-//params.annot = null
+params.annot = null
 
-//gtf_file = file(params.annot)
+gtf_file = file(params.annot)
 R_file = file(params.formatscript)
 fasta_file = file(params.ref)
 fastq_ch = Channel.fromFilePairs(params.reads + "*_{1,2}.{fastq,fq}.gz").view()
@@ -71,11 +71,12 @@ process generateEvents {
 
     shell:
     """
-    suppa.py generateEvents -i !{annotation} -o transcripts.events -e SE SS MX RI FL -f ioe
+    suppa.py generateEvents -i !{gtf_file} -o transcripts.events -e SE SS MX RI FL -f ioe
     awk '
 		FNR==1 && NR!=1 { while (/^<header>/) getline; }
 		1 {print}
-	'./SUPPA/*.ioe > ./SUPPA/transcripts.events.ioe
+	'
+	./*.ioe > ./transcripts.events.ioe
     """
 }
 
@@ -101,4 +102,5 @@ workflow {
     buildIndex(fasta_file)
     quant(buildIndex.out, trim.out)
     formatTPM(quant.out)
+    generateEvents()
 }
