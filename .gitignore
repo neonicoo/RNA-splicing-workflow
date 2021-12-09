@@ -1,6 +1,7 @@
 # others 
 hg19_EnsenmblGenes_sequence_ensenmbl.fasta.gz
 Homo_sapiens.GRCh37.75.formatted.gtf.gz
+Homo_sapiens.GRCh37.75.formatted.gtf
 /work/
 .nextflow.log*
 .nextflow/
